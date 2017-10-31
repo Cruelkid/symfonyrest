@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\User;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class AuthorizationController
@@ -20,14 +21,14 @@ class AuthorizationController extends FOSRestController
     /**
      * @Rest\Post("/auth")
      * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
      * @return View
      */
-    public function authAction(Request $request) {
+    public function authAction(Request $request, UserPasswordEncoderInterface $encoder) {
         $auth_key = $request->get('auth_key');
-        $password = md5($request->get('password'));
+        $password = $request->get('password');
         $phone = $request->get('phone');
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy([
-            'password' => $password,
             'phone' => $phone
         ]);
 
@@ -35,12 +36,16 @@ class AuthorizationController extends FOSRestController
             //TODO invalid token
         }
 
-        if ($auth_key == $this->getParameter('auth_key') && !empty($user)) {
-            return new View([
-                'user_id' => $user->getId(),
-                'access_token' => $user->getToken(),
-                'user_status' => $user->getStatus()
-            ], Response::HTTP_OK);
+        if ($auth_key == $this->getParameter('auth_key')) {
+            if ($encoder->isPasswordValid($user, $password)) {
+                return new View([
+                    'user_id' => $user->getId(),
+                    'access_token' => $user->getToken(),
+                    'user_status' => $user->getStatus()
+                ], Response::HTTP_OK);
+            } else {
+                return new View("Invalid password. Access denied.", Response::HTTP_UNAUTHORIZED);
+            }
         }
 
         return new View("User not found", Response::HTTP_NOT_FOUND);

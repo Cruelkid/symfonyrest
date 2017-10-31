@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Car;
+use AppBundle\Entity\User;
 
 /**
  * Class MapInfoController
@@ -23,14 +24,21 @@ class MapInfoController extends FOSRestController
      * @return View
      */
     public function getMapInfoAction(Request $request) {
-        $location = "lat=" . $request->get('lat') . "&lan=" . $request->get('lan');
-        $access_token = $request->get('access_token');
+        $token = $request->get('access_token');
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy([
+           'token' => $token
+        ]);
         $cars = $this->getDoctrine()->getRepository('AppBundle:Car')->findAll();
+        $location = "lat=" . $request->get('lat') . "&lan=" . $request->get('lan');
 
-        if ($access_token == $this->getParameter('map_key') && !empty($cars)) {
-            return new View([
-                'cars:' => $cars
-            ]);
+        if (!empty($user)) {
+            if (!empty($cars)) {
+                return new View([
+                    'cars:' => $cars
+                ]);
+            }
+        } else {
+            return new View("Access denied.", Response::HTTP_UNAUTHORIZED);
         }
     }
 }
