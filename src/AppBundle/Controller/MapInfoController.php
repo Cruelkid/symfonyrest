@@ -35,7 +35,7 @@ class MapInfoController extends FOSRestController
             if (!empty($cars)) {
                 return new View([
                     'cars:' => $cars
-                ]);
+                ], Response::HTTP_OK);
             }
         } else {
             return new View("Access denied.", Response::HTTP_UNAUTHORIZED);
