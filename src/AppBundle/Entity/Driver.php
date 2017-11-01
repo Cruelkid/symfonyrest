@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * User
+ * Driver
  *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Table(name="driver")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DriverRepository")
  */
-class User implements UserInterface
+class Driver implements UserInterface
 {
     /**
      * @var int
@@ -46,16 +46,9 @@ class User implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="country_id", type="integer")
+     * @ORM\Column(name="car_id", type="integer", unique=true)
      */
-    private $countryId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=255)
-     */
-    private $status;
+    private $carId;
 
     /**
      * @var string
@@ -87,7 +80,7 @@ class User implements UserInterface
      *
      * @param string $username
      *
-     * @return User
+     * @return Driver
      */
     public function setUsername($username)
     {
@@ -111,7 +104,7 @@ class User implements UserInterface
      *
      * @param string $password
      *
-     * @return User
+     * @return Driver
      */
     public function setPassword($password)
     {
@@ -135,7 +128,7 @@ class User implements UserInterface
      *
      * @param string $phone
      *
-     * @return User
+     * @return Driver
      */
     public function setPhone($phone)
     {
@@ -155,51 +148,27 @@ class User implements UserInterface
     }
 
     /**
-     * Set countryId
+     * Set carId
      *
-     * @param integer $countryId
+     * @param integer $carId
      *
-     * @return User
+     * @return Driver
      */
-    public function setCountryId($countryId)
+    public function setCarId($carId)
     {
-        $this->countryId = $countryId;
+        $this->carId = $carId;
 
         return $this;
     }
 
     /**
-     * Get countryId
+     * Get carId
      *
      * @return int
      */
-    public function getCountryId()
+    public function getCarId()
     {
-        return $this->countryId;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return User
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
+        return $this->carId;
     }
 
     /**
@@ -207,7 +176,7 @@ class User implements UserInterface
      *
      * @param string $token
      *
-     * @return User
+     * @return Driver
      */
     public function setToken($token)
     {
@@ -231,7 +200,7 @@ class User implements UserInterface
      *
      * @param string $email
      *
-     * @return User
+     * @return Driver
      */
     public function setEmail($email)
     {
@@ -251,15 +220,15 @@ class User implements UserInterface
     }
 
     public function generateToken() {
-    $length = 16;
-    $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+|\=-{}[]:;"\',.<>?/';
-    $symbolsLength = strlen($symbols);
-    $token = '';
-    for ($i = 0; $i < $length; $i++) {
-        $token .= $symbols[rand(0, $symbolsLength - 1)];
+        $length = 16;
+        $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+|\=-{}[]:;"\',.<>?/';
+        $symbolsLength = strlen($symbols);
+        $token = '';
+        for ($i = 0; $i < $length; $i++) {
+            $token .= $symbols[rand(0, $symbolsLength - 1)];
+        }
+        return $token;
     }
-    return $token;
-}
 
     /**
      * Returns the roles granted to the user.

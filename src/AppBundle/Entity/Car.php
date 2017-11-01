@@ -29,6 +29,13 @@ class Car
     private $status;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="driver_id", type="integer", unique=true)
+     */
+    private $driver_id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="color", type="string", length=255)
@@ -87,13 +94,6 @@ class Car
     /**
      * @var string
      *
-     * @ORM\Column(name="driver_phone", type="string", length=255)
-     */
-    private $driverPhone;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="costs_per_1", type="string", length=255)
      */
     private $costsPer1;
@@ -108,9 +108,9 @@ class Car
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", length=255)
+     * @ORM\Column(name="location_id", type="integer")
      */
-    private $location;
+    private $location_id;
 
 
     /**
@@ -121,6 +121,22 @@ class Car
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDriverId()
+    {
+        return $this->driver_id;
+    }
+
+    /**
+     * @param int $driver_id
+     */
+    public function setDriverId($driver_id)
+    {
+        $this->driver_id = $driver_id;
     }
 
     /**
@@ -340,30 +356,6 @@ class Car
     }
 
     /**
-     * Set driverPhone
-     *
-     * @param string $driverPhone
-     *
-     * @return Car
-     */
-    public function setDriverPhone($driverPhone)
-    {
-        $this->driverPhone = $driverPhone;
-
-        return $this;
-    }
-
-    /**
-     * Get driverPhone
-     *
-     * @return string
-     */
-    public function getDriverPhone()
-    {
-        return $this->driverPhone;
-    }
-
-    /**
      * Set costsPer1
      *
      * @param string $costsPer1
@@ -412,27 +404,27 @@ class Car
     }
 
     /**
-     * Set location
+     * Set location_id
      *
      * @param string $location
      *
      * @return Car
      */
-    public function setLocation($location)
+    public function setLocationId($location)
     {
-        $this->location = $location;
+        $this->location_id = $location;
 
         return $this;
     }
 
     /**
-     * Get location
+     * Get location_id
      *
      * @return string
      */
-    public function getLocation()
+    public function getLocationId()
     {
-        return $this->location;
+        return $this->location_id;
     }
 }
 

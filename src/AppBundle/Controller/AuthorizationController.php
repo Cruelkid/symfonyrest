@@ -32,11 +32,11 @@ class AuthorizationController extends FOSRestController
             'phone' => $phone
         ]);
 
-        if ($auth_key != $this->getParameter('auth_key')) {
+        if ($auth_key != $this->getParameter('secret')) {
             //TODO invalid token
         }
 
-        if ($auth_key == $this->getParameter('auth_key')) {
+        if ($auth_key == $this->getParameter('secret')) {
             if ($encoder->isPasswordValid($user, $password)) {
                 return new View([
                     'user_id' => $user->getId(),
