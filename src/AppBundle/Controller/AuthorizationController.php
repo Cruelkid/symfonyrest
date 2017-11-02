@@ -32,10 +32,6 @@ class AuthorizationController extends FOSRestController
             'phone' => $phone
         ]);
 
-        if ($auth_key != $this->getParameter('secret')) {
-            //TODO invalid token
-        }
-
         if ($auth_key == $this->getParameter('secret')) {
             if ($encoder->isPasswordValid($user, $password)) {
                 return new View([
@@ -46,6 +42,8 @@ class AuthorizationController extends FOSRestController
             } else {
                 return new View("Invalid password. Access denied.", Response::HTTP_UNAUTHORIZED);
             }
+        } elseif ($auth_key != $this->getParameter('secret')) {
+            return new View("Access denied.", Response::HTTP_UNAUTHORIZED);
         }
 
         return new View("User not found", Response::HTTP_NOT_FOUND);

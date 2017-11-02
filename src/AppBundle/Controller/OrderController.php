@@ -39,7 +39,6 @@ class OrderController extends FOSRestController
                 'id' => $request->request->get('region_id')
             ])->getName();
             $order_time = date("Y-m-d H:i:s");
-            $tmp = $request->request->get('route_points');
             $route_points = $request->request->get('route_points');
 
             $order = new Order();
