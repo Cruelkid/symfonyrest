@@ -6,7 +6,6 @@ use AppBundle\Entity\Car;
 use AppBundle\Entity\CarLocation;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\Driver;
-use AppBundle\Entity\Product;
 use AppBundle\Entity\Region;
 use AppBundle\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
