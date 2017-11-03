@@ -55,6 +55,8 @@ class OrderController extends FOSRestController
             $em->persist($order);
             $em->flush();
 
+            /**add push message here **/
+
             foreach ($route_points as $route_point) {
                 $routePoint = new RoutePoint();
                 $routePoint->setOrderId($order);
