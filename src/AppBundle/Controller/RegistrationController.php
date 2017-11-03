@@ -25,6 +25,10 @@ class RegistrationController extends FOSRestController
      * @return View
      */
     public function registrationAction(Request $request, UserPasswordEncoderInterface $encoder) {
+        $access_token = $request->get('access_token');
+        if ($access_token != $this->getParameter('secret')) {
+            return new View("Access denied.", Response::HTTP_UNAUTHORIZED);
+        }
         $user = new User();
         $username = $request->get('username');
         $password = $request->get('password');
